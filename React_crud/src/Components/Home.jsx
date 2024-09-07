@@ -6,7 +6,8 @@ const Home = () => {
  
     const [userField, setUserField] = useState({
         name: "",
-        email: ""
+        email: "",
+        password: ""
     });
  
     const changeUserFieldHandler = (e) => {

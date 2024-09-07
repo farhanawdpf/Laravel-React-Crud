@@ -19,3 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/user',[UserController::class, 'index'])->name('user');
+Route::post('addnew',[UserController::class,'store']);

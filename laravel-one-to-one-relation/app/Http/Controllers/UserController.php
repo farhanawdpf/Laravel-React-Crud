@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Phone;
 use App\Http\Requests\UserStoreRequest;
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
@@ -36,23 +36,28 @@ class UserController extends Controller
 
     }
 
-    public function store(UserStoreRequest $request){
-        try {
-            User::create([
+
+
+    // return Redirect::to('/');
+
+    // public function store(Request $request){
+    //     User::create($request->only([
+    //         'name',
+    //         'email',
+    //         'password'
+    //     ]));
+    // }
+
+    public function store(Request $request)
+    {
+        $products = DB::table('users')
+        ->insert(
+            [
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' =>$request->password
-            ]);
-
-            return response()->json([
-                'message' => "User successfully created"
-            ],200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-
-            ],500);
-        }
+                'password' => $request->password,
+            ]
+        );
     }
 
     public function update(UserStoreRequest $request,$id){
