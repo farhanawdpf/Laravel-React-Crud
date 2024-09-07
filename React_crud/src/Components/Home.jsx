@@ -6,8 +6,7 @@ const Home = () => {
  
     const [userField, setUserField] = useState({
         name: "",
-        email: "",
-        password: ""
+        email: ""
     });
  
     const changeUserFieldHandler = (e) => {
@@ -36,7 +35,7 @@ const Home = () => {
  
     return (
         <div className="container">
-            <h2 className='w-100 d-flex justify-content-center p-3'>React JS Laravel 10 REST API CRUD (Create, Read, Update and Delete) | Axios Mysql</h2>
+            <h2 className='w-100 d-flex justify-content-center p-3'>React JS Laravel 11 REST API CRUD (Create, Read, Update and Delete) | Axios Mysql</h2>
                 <div className='row'>
                     <div className='col-md-4'>
                         <h3>Add Your Detail</h3>

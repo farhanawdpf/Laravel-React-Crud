@@ -11,7 +11,8 @@ const Edit = () => {
  
     const [userField, setUserField] = useState({
         name: "",
-        email: ""
+        email: "",
+        password: ""
     });
  
     useEffect(()=>{
