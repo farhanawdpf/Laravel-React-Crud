@@ -8,7 +8,7 @@ use App\Http\Requests\UserStoreRequest;
 use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
-
+    //show data
     public function index(){
         $users = User::all();
 
