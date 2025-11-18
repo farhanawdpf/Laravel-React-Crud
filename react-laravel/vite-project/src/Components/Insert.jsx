@@ -43,7 +43,7 @@ const [productField, setProductField] = useState({
                                 <input type="text" className="form-control" id="name" placeholder="Enter Your Full Name" name="name" onChange={e => changeUserFieldHandler(e)} />
                             </div>
                             <div className="mb-3 mt-3">
-                              Password:
+                              price:
                                 <input type="text" className="form-control" id="price" placeholder="Enter price" name="price" onChange={e => changeUserFieldHandler(e)} required/>
                             </div>
                             <div className="mb-3 mt-3">
@@ -51,7 +51,7 @@ const [productField, setProductField] = useState({
                                 <input type="text" className="form-control" id="password" placeholder="Enter description" name="description" onChange={e => changeUserFieldHandler(e)} required/>
                             </div>
                              
-                            <button type="submit" className="btn btn-primary" onClick={e => onSubmitChange(e)}>Add User</button>
+                            <button type="submit" className="btn btn-primary" onClick={e => onSubmitChange(e)}>Add product</button>
                         </form>
                     </div>
                     <div className='col-md-10'>

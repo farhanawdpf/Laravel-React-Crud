@@ -1,8 +1,17 @@
-import React from 'react'
-import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import axios from 'axios'
 function List() {
      const [products, setProducts] = useState([]);
+       const updateProduct = async (id) => {
+    try {
+      await axios.put(`${"http://127.0.0.1:8000/api/products/${id}"}/${id}`, form);
+      setForm({ name: "", price: "", description: "" });
+      fetchProducts();
+    } catch (err) {
+      console.log(err);
+    }
+  };
      // Delete data
 const deleteProduct = async (id) => {
   await axios.delete(`http://127.0.0.1:8000/api/products/${id}`);
@@ -41,6 +50,8 @@ const deleteProduct = async (id) => {
                                 <td>{p.price} </td>
                                 <td>
                                   <button onClick={() => deleteProduct(p.id)}>Delete</button>
+                                
+                                        <NavLink to={`/edit/${p.id}`} className="btn btn-info mx-2">Edit</NavLink>
                                 </td>
                             </tr>
                         )
