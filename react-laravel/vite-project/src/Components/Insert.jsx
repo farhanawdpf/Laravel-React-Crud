@@ -1,47 +1,66 @@
-import React, { useState } from "react";
-import List from "./List";
-import axios from "axios";
+import React, { useState } from 'react';
+import List from './List';
+import axios from 'axios';
 const Insert = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-
-  const createProduct = async () => {
-    await axios.post("http://127.0.0.1:8000/api/products", {
-      name,
-      price,
-      description,
+const [productField, setProductField] = useState({
+        name: "",
+        price: "",
+        description: ""
     });
-
-    fetchProducts(); // reload list
-  };
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-4">
-          <h3>Add Your Product</h3>
-          <form>
-            <input
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              placeholder="Price"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-             <input
-              placeholder="description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <button onClick={createProduct}>Add Product</button>
-          </form>
+ 
+    const changeUserFieldHandler = (e) => {
+        setProductField({
+            ...productField,
+            [e.target.name]: e.target.value
+        });
+        // console.log(userField);
+ 
+    }
+    const [loading,setLoading]=useState()
+ 
+    const onSubmitChange = async (e) => {
+        e.preventDefault();
+        try {
+            const responce= await axios.post("http://127.0.0.1:8000/api/products", productField);
+            console.log(responce)
+            setLoading(true);
+        } catch (err) {
+            console.log("Something Wrong");
+        }
+    }
+    if(loading){
+        return <Insert/>
+    }
+ 
+    return (
+        <div className="container">
+                <div className='row'>
+                    <div className='col-md-4'>
+                        <h3>Add Your Product</h3>
+                        <form>
+                            <div className="mb-3 mt-3">
+                                 Product Name:
+                                <input type="text" className="form-control" id="name" placeholder="Enter Your Full Name" name="name" onChange={e => changeUserFieldHandler(e)} />
+                            </div>
+                            <div className="mb-3 mt-3">
+                              Password:
+                                <input type="text" className="form-control" id="price" placeholder="Enter price" name="price" onChange={e => changeUserFieldHandler(e)} required/>
+                            </div>
+                            <div className="mb-3 mt-3">
+                              Description:
+                                <input type="text" className="form-control" id="password" placeholder="Enter description" name="description" onChange={e => changeUserFieldHandler(e)} required/>
+                            </div>
+                             
+                            <button type="submit" className="btn btn-primary" onClick={e => onSubmitChange(e)}>Add User</button>
+                        </form>
+                    </div>
+                    <div className='col-md-10'>
+                        <List />
+                    </div>
+                </div>
         </div>
-        <div className="col-md-10">
-          <List />
-        </div>
-      </div>
-    </div>
-  );
+    )
 };
+
 
 export default Insert;
