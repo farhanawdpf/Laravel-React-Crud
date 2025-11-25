@@ -1,0 +1,26 @@
+Backend:
+step 1:laravel 12 install
+step 2:.env setup
+step 3:php artisan key:generate --ansi
+step 4: php artisan migrate
+step 5: php artisan make:middleware ApiAuth
+step 6: php artisan make:controller AuthController
+step 7:php artisan install:api
+
+
+
+Frontend(react):
+step 1:$ npm create vite@latest
+step 2: $ npm install react-router-dom
+step 3: $ npm i axios
+step 4: create component 
+	i)Register page
+	ii)Login Page
+	iii)Home Page
+
+
+
+
+
+
+
