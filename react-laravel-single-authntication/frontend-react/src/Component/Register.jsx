@@ -8,18 +8,24 @@ const Register = () => {
       setForm({...form, [e.target.name]: e.target.value});
   }
 
-  const register = async () => {
+ const submit = async (e) => {
+    e.preventDefault();
     const res = await axios.post("http://127.0.0.1:8000/api/register", form);
     localStorage.setItem("token", res.data.token);
     alert("Registration Success!");
-  }
+  };
+
   return (
     <div className='container'> 
-
-      <input name="name" onChange={handleChange} placeholder="Name" /><br />
-      <input name="email" onChange={handleChange} placeholder="Email" /><br />
-      <input name="password" type="password" onChange={handleChange} placeholder="Password" /><br /><br />
-      <button onClick={register}>Register</button>
+    <form onSubmit={submit}><br />
+    Name:
+      <input name="name" onChange={handleChange} /><br />
+      Email:
+      <input name="email" onChange={handleChange} /><br />
+      Password:
+      <input name="password" type="password" onChange={handleChange} />
+      <button>Register</button>
+    </form>
 
     </div>
   )
