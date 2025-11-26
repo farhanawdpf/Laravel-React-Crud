@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
+import { Link,useNavigate  } from "react-router-dom";
 const Register = () => {
+    const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const handleChange = (e) => {
@@ -13,6 +15,7 @@ const Register = () => {
     const res = await axios.post("http://127.0.0.1:8000/api/register", form);
     localStorage.setItem("token", res.data.token);
     alert("Registration Success!");
+       navigate("/login");
   };
 
   return (
@@ -51,6 +54,9 @@ const Register = () => {
               </div>
               <button className="btn btn-primary mt-4">Register</button>
             </form>
+            <div> 
+                <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign In</Link>
+            </div>
           </div>
         </div>
       </div>
