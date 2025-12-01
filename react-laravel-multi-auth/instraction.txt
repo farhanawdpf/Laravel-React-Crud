@@ -1,0 +1,194 @@
+Laravel (Backend) — Setup steps:
+1.composer create-project laravel/laravel multi-auth
+cd multi-auth
+
+
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
+
+2) Migration — users table (role field)
+database/migrations/2025_01_01_000000_create_users_table.php
+
+3) User Model
+
+app/Models/User.php
+
+4) AuthController (login / logout / me)
+
+app/Http/Controllers/AuthController.php
+
+
+
+
+
+
+
+
+
+
+5) Middleware — role check
+
+php artisan make:middleware CheckRole
+
+app/Http/Middleware/CheckRole.php
+
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class CheckRole
+{
+    public function handle(Request $request, Closure $next, $role)
+    {
+        $user = $request->user();
+        if (!$user || $user->role !== $role) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        return $next($request);
+    }
+}
+
+
+Register middleware in app/Http/Kernel.php in $routeMiddleware:
+
+'role' => \App\Http\Middleware\CheckRole::class,
+
+
+
+
+
+6) Routes (API)
+
+routes/api.php
+
+7) Seeder — create demo users
+
+database/seeders/UsersTableSeeder.php
+
+
+
+
+Register seeder in DatabaseSeeder.php:
+
+$this->call(UsersTableSeeder::class);
+
+
+
+8) CORS & Sanctum notes (important for React dev)
+
+In config/cors.php add your React dev origin (e.g. http://localhost:5173) to allowed_origins.
+In .env:
+
+SANCTUM_STATEFUL_DOMAINS=localhost:5173
+SESSION_DOMAIN=localhost
+
+
+
+
+
+9) React (Frontend)
+Create Vite React project:
+
+npm create vite@latest multi-auth-frontend -- --template react
+cd multi-auth-frontend
+npm install
+npm i axios react-router-dom
+
+
+
+
+9.1 Axios instance & auth helpers
+
+src/api.js
+
+import axios from 'axios';
+
+export const api = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  // If you use Sanctum cookies: withCredentials: true
+  // withCredentials: true,
+});
+
+// attach token if present
+export function setAuthToken(token) {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    localStorage.setItem('token', token);
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+    localStorage.removeItem('token');
+  }
+}
+
+export function saveRole(role) {
+  localStorage.setItem('role', role);
+}
+
+
+9.2 Login Page
+
+src/pages/Login.jsx
+
+
+
+9.3 ProtectedRoute component
+
+src/components/ProtectedRoute.jsx
+
+
+
+
+9.4 Dashboards (simple)
+
+src/pages/AdminDashboard.jsx
+
+
+9.5 Router setup
+
+src/App.jsx 
+
+
+npm run dev
+
+
+
+
+
+
+
+
+
+
+------------------------**********------------------------
+Sanctum কি কাজ করে?
+1) Login করলে Token দেয়
+
+React যখন Login API কল করে, Sanctum একটি token দেয়।
+React সেই token localStorage / cookie তে রাখে।
+
+2) Protected Routes নিরাপদ রাখে
+
+যেমন:
+
+/api/admin/dashboard
+
+/api/seller/products
+
+/api/customer/orders
+
+এগুলো Sanctum ছাড়া সিকিউর হবে না।
+
+3) Multi-auth Role Handle করা সহজ
+
+Admin, Seller, Customer আলাদা আলাদা role set করতে পারবেন।
+
+Sanctum ব্যবহার করলে React সহজে role-based API access করতে পারে।
+
+4) Session ছাড়া Authentication
+
+React App-এ PHP session কাজ করে না।
+Sanctum token দিয়ে দেয় → React সেই token পাঠায় → Laravel user verify করে।
